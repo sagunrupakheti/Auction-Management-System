@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+{% extends "adminDashboard.html" %}
+{% load static %}
+{% block body_block %}
+<style>
+    #dashboard{
+    color:  #846FAA;}
+</style>
+    <section id="about" class="about bg-white" style="margin-left:10vw; min-width:80vw;">
+        <div class="container" style="min-height:60vh;">
+            <div class="section-title mt-4" data-aos="fade-left">
+              <h2>Administrator Dashboard</h2>
+                 <div class="row">
+                <div class="card shadow mb-4 col-2" style="margin-left:1vw;background-color:rgba(153, 160, 255, 0.4)">
+                    <div class="py-3 d-flex flex-row align-items-center justify-content-between" >
+                        <h6 class="m-0 font-weight-bold" ><center><strong>Total Auctions</strong></center></h6>
+                    </div>
+                    <hr>
+                    <div class="card-body">
+                        <div class="chart-area">
+                            {% if auctions %}
+                                {{auctions}}
+                            {% else %}
+                                0
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="card shadow mb-4 col-2" style="margin-left:3vw;background-color:rgba(153, 160, 255, 0.4)"">
+                    <div class=" py-3 d-flex flex-row align-items-center justify-content-between" >
+                        <h6 class="m-0 font-weight-bold" ><center><strong>Total Buyers/Sellers</strong></center></h6>
+                    </div>
+                    <hr>
+                    <div class="card-body">
+                        <div class="chart-area">
+                            {% if joint %}
+                                {{joint}}
+                            {% else %}
+                                0
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="card shadow mb-4 col-2" style="margin-left:3vw;background-color:rgba(153, 160, 255, 0.4)"">
+                    <div class="py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold"><center><strong>Total Buyers</strong></center></h6>
+                    </div>
+                    <hr>
+                    <div class="card-body">
+                        <div class="chart-area">
+                            {% if buyers %}
+                                {{buyers}}
+                            {% else %}
+                                0
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="card shadow mb-4 col-2" style="margin-left:3vw;background-color:rgba(153, 160, 255, 0.4)"">
+                    <div class="py-3 d-flex flex-row align-items-center justify-content-between" >
+                        <h6 class="m-0 font-weight-bold" ><center><strong>Total Sellers</strong></center></h6>
+                    </div>
+                    <hr>
+                    <div class="card-body">
+                        <div class="chart-area">
+                            {% if sellers %}
+                                {{sellers}}
+                            {% else %}
+                                0
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="card shadow mb-4 col-2" style="margin-left:3vw;background-color:rgba(153, 160, 255, 0.4)"">
+                    <div class=" py-3 d-flex flex-row align-items-center justify-content-between" >
+                        <h6 class="m-0 font-weight-bold" ><center><strong>Total Items</strong></center></h6>
+                    </div>
+                    <hr>
+                    <div class="card-body">
+                        <div class="chart-area">
+                            {% if items %}
+                                {{items}}
+                            {% else %}
+                                0
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row col-12">
+                              <!-- Area Chart -->
+                <!-- Pie Chart -->
+                <div class="col-xl-6 col-lg-5" >
+                    <div class="card shadow mb-4">
+                        <!-- Card Header - Dropdown -->
+                        <div
+                            class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold ">Total Users</h6>
+                            <script>
+                                $(document).ready(function(){
+                                    var ctx = document.getElementById('newBar').getContext('2d');
+                                    var myChart = new Chart(ctx, {
+                                        type: 'pie',
+                                        data: {
+                                            labels: [{% for u in user_type %}'{{u.client_type}}',{% endfor %}],
+                                            datasets: [{
+                                                label: '# of Votes',
+                                                data: [{% for u in user_type %}'{{u.total}}',{% endfor %}],
+                                                backgroundColor: [
+                                                    'rgba(255, 99, 132, 0.4)',
+                                                    'rgba(54, 162, 235, 0.4)',
+                                                    'rgba(255, 206, 86, 0.4)',
+                                                    'rgba(75, 192, 192, 0.4)',
+                                                    'rgba(153, 102, 255, 0.4)',
+                                                    'rgba(255, 159, 64, 0.4)'
+                                                ],
+                                                borderColor: [
+                                                    'rgba(255, 99, 132, 1)',
+                                                    'rgba(54, 162, 235, 1)',
+                                                    'rgba(255, 206, 86, 1)',
+                                                    'rgba(75, 192, 192, 1)',
+                                                    'rgba(153, 102, 255, 1)',
+                                                    'rgba(255, 159, 64, 1)'
+                                                ],
+                                                borderWidth: 1
+                                            }]
+                                        },
+                                        options: {
+                                            scales: {
+                                                y: {
+                                                    beginAtZero: true
+                                                }
+                                            }
+                                        }
+                                    });
+                                });
+                            </script>
+
+                        </div>
+                        <!-- Card Body -->
+                        <div class="card-body">
+                            <div class="chart-pie pt-4 pb-2">
+                                <canvas id="newBar" style="max-height:35vh;"></canvas>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-lg-5" >
+                    <div class="card shadow mb-4">
+                        <!-- Card Header - Dropdown -->
+                        <div
+                            class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold ">Categories and Items</h6>
+                            <script>
+                                $(document).ready(function(){
+                                    var ctx = document.getElementById('newItem').getContext('2d');
+                                    var newItem = new Chart(ctx, {
+                                        type: 'bar',
+                                        data: {
+                                            labels: [{% for i in total_items %}'{{i.category}}',{% endfor %}],
+                                            datasets: [{
+                                                label: '# of Votes',
+                                                data: [{% for i in total_items %}'{{i.total}}',{% endfor %}],
+                                                backgroundColor: [
+                                                    'rgba(255, 99, 132, 0.4)',
+                                                    'rgba(54, 162, 235, 0.4)',
+                                                    'rgba(255, 206, 86, 0.4)',
+                                                    'rgba(75, 192, 192, 0.4)',
+                                                    'rgba(153, 102, 255, 0.4)',
+                                                    'rgba(255, 159, 64, 0.4)'
+                                                ],
+                                                borderColor: [
+                                                    'rgba(255, 99, 132, 1)',
+                                                    'rgba(54, 162, 235, 1)',
+                                                    'rgba(255, 206, 86, 1)',
+                                                    'rgba(75, 192, 192, 1)',
+                                                    'rgba(153, 102, 255, 1)',
+                                                    'rgba(255, 159, 64, 1)'
+                                                ],
+                                                borderWidth: 1
+                                            }]
+                                        },
+                                        options: {
+                                            scales: {
+                                                y: {
+                                                    beginAtZero: true
+                                                }
+                                            }
+                                        }
+                                    });
+                                });
+                            </script>
+
+                        </div>
+                        <!-- Card Body -->
+                        <div class="card-body">
+                            <div class="chart-pie pt-4 pb-2">
+                                <canvas id="newItem" style="max-height:35vh;"></canvas>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div class="col-xl-12 col-lg-7" >
+                    <div class="card shadow mb-4">
+
+                        <!-- Card Header - Dropdown -->
+                        <div
+                            class="card-header py-3 d-flex flex-row align-items-center justify-content-between" >
+                            <h6 class="m-0 font-weight-bold" ><center>Items and Sales</center></h6>
+                            <script>
+                                $(document).ready(function(){
+                                    var ctx = document.getElementById('myChart').getContext('2d');
+                                    var myChart = new Chart(ctx, {
+                                        type: 'bar',
+                                        data: {
+                                            labels: [{% for i in item %}'{{i.item_info}}',{% endfor %}],
+                                            datasets: [{
+                                                label: 'Sold Price is Pounds',
+                                                data: [{% for i in item %}'{{i.sold_price}}',{% endfor %}],
+                                                backgroundColor: [
+                                                    'rgba(255, 99, 132, 0.4)',
+                                                    'rgba(54, 162, 235, 0.4)',
+                                                    'rgba(255, 206, 86, 0.4)',
+                                                    'rgba(75, 192, 192, 0.4)',
+                                                    'rgba(153, 102, 255, 0.4)',
+                                                    'rgba(255, 159, 64, 0.4)'
+                                                ],
+                                                borderColor: [
+                                                    'rgba(255, 99, 132, 1)',
+                                                    'rgba(54, 162, 235, 1)',
+                                                    'rgba(255, 206, 86, 1)',
+                                                    'rgba(75, 192, 192, 1)',
+                                                    'rgba(153, 102, 255, 1)',
+                                                    'rgba(255, 159, 64, 1)'
+                                                ],
+                                                borderWidth: 1
+                                            }]
+                                        },
+                                        options: {
+                                            scales: {
+                                                y: {
+                                                    beginAtZero: true
+                                                }
+                                            }
+                                        }
+                                    });
+                                });
+                            </script>
+            <!--                                    <canvas id="myChart" width="400" height="400"></canvas>-->
+
+                        </div>
+                        <!-- Card Body -->
+                        <div class="card-body">
+                            <div class="chart-area">
+                               <canvas id="myChart" height="120"></canvas>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

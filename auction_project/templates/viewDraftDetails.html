@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+{% extends "adminDashboard.html"%}
+{% load static %}
+{% block body_block %}
+    <section id="about" class="about bg-white" style="margin-left:10vw; width:80vw;">
+        <div class="container">
+            <h1><center><strong>Request Details</strong></center></h1>
+            <div class="card">
+                {% if getRequestInfo %}
+                    {% for g in getRequestInfo %}
+                      <ul class="list-group list-group-flush">
+                         <div class="row">
+                             <div class="col-6">
+                                 <li class="list-group-item"><strong>First Name:</strong></li>
+                             </div>
+                             <div class="col-6">
+                                <li class="list-group-item" style="margin-left:-2vw">{{g.firstName}}</li>
+                             </div>
+                         </div>
+                          <div class="row">
+                             <div class="col-6">
+                                 <li class="list-group-item"><strong>Last Name:</strong></li>
+                             </div>
+                             <div class="col-6">
+                                <li class="list-group-item" style="margin-left:-2vw">{{g.lastName}}</li>
+                             </div>
+                         </div>
+                          <div class="row">
+                             <div class="col-6">
+                                 <li class="list-group-item"><strong>Email:</strong></li>
+                             </div>
+                             <div class="col-6">
+                                <li class="list-group-item" style="margin-left:-2vw">{{g.email}}</li>
+                             </div>
+                         </div>
+                         <div class="row">
+                             <div class="col-6">
+                                 <li class="list-group-item"><strong>Date of Birth:</strong></li>
+                             </div>
+                             <div class="col-6">
+                                <li class="list-group-item" style="margin-left:-2vw">{{g.dob}}</li>
+                             </div>
+                         </div>
+                          <div class="row">
+                             <div class="col-6">
+                                 <li class="list-group-item"><strong>Country:</strong></li>
+                             </div>
+                             <div class="col-6">
+                                <li class="list-group-item" style="margin-left:-2vw">{{g.country}}</li>
+                             </div>
+                         </div>
+                          <div class="row">
+                             <div class="col-6">
+                                 <li class="list-group-item"><strong>City:</strong></li>
+                             </div>
+                             <div class="col-6">
+                                <li class="list-group-item" style="margin-left:-2vw">{{g.city}}</li>
+                             </div>
+                         </div>
+                          <div class="row">
+                             <div class="col-6">
+                                 <li class="list-group-item"><strong>Zip Code:</strong></li>
+                             </div>
+                             <div class="col-6">
+                                <li class="list-group-item" style="margin-left:-2vw">{{g.zip_code}}</li>
+                             </div>
+                         </div>
+                          <div class="row">
+                             <div class="col-6">
+                                 <li class="list-group-item"><strong>Address:</strong></li>
+                             </div>
+                             <div class="col-6">
+                                <li class="list-group-item" style="margin-left:-2vw">{{g.address}}</li>
+                             </div>
+                         </div>
+                          <div class="row">
+                             <div class="col-6">
+                                 <li class="list-group-item"><strong>Country code:</strong></li>
+                             </div>
+                             <div class="col-6">
+                                <li class="list-group-item" style="margin-left:-2vw">{{g.country_code}}</li>
+                             </div>
+                         </div>
+                          <div class="row">
+                             <div class="col-6">
+                                 <li class="list-group-item"><strong>Contact:</strong></li>
+                             </div>
+                             <div class="col-6">
+                                <li class="list-group-item" style="margin-left:-2vw">{{g.contact}}</li>
+                             </div>
+                         </div>
+                          <div class="row">
+                             <div class="col-6">
+                                 <li class="list-group-item"><strong>Bank Account Number:</strong></li>
+                             </div>
+                             <div class="col-6">
+                                <li class="list-group-item" style="margin-left:-2vw">{{g.bank_account_number}}</li>
+                             </div>
+                         </div>
+                          <div class="row">
+                             <div class="col-6">
+                                 <li class="list-group-item"><strong>Bank Sort Code:</strong></li>
+                             </div>
+                             <div class="col-6">
+                                <li class="list-group-item" style="margin-left:-2vw">{{g.bank_sort_code}}</li>
+                             </div>
+                         </div>
+                          <div class="row">
+                             <div class="col-6">
+                                 <li class="list-group-item"><strong>Request for:</strong></li>
+                             </div>
+                             <div class="col-6">
+                                <li class="list-group-item" style="margin-left:-2vw">{{g.client_type}} account</li>
+                             </div>
+                         </div>
+                         <div class="row" >
+                             <div class="col-12" style="padding:1vw;">
+                                 <strong><a href="{% url 'acceptUser' g.id %}" style="text-decoration:none;margin-left:55vw;" class="btn btn-success btn-lg">Accept User Request</a></strong>
+                                <a href="{% url 'declineUser' g.id %}" style="text-decoration:none" class="btn btn-danger btn-lg">Decline Request</a>
+                             </div>
+                         </div>
+                      </ul>
+                    {% endfor %}
+                {% endif %}
+
+            </div>
+        </div>
+    </section>
+{% endblock %}

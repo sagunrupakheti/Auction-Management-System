@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+{% extends temp %}
+{% load static %}
+{% block body_block %}
+<style>
+    #browse{
+    color:  #846FAA;}
+</style>
+    <section id="services" class="services section-bg" style="width:100%; min-height:80vh; margin-bottom:-5vw;">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="section-title" data-aos="fade-right">
+              <h2>Live Auctions</h2>
+              <p></p>
+            </div>
+          </div>
+          <div class="col-lg-8">
+            <div class="row">
+              {% if auction %}
+                {% for a in auction%}
+                  <div class="col-md-9 d-flex align-items-stretch">
+                    <div class="icon-box" data-aos="zoom-in" data-aos-delay="100">
+                      <div class="icon"><i class="bx bx-home"></i></div>
+                      <h4><a href="{% url 'showAuctionItemsBuyer' a.auction_id %}">{{a.auction_name}}</a></h4>
+                      <h5 class="text-success">{{a.auction_status}}</h5>
+                      <p>{{a.auction_description}}</p>
+                    </div>
+                  </div>
+                {% endfor %}
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+{% endblock %}

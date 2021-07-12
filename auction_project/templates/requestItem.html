@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+{% extends temp %}
+{% load static %}
+{% block body_block %}
+<style>
+    #req{
+    color:  #846FAA;}
+</style>
+    <section id="about" class="about bg-white" style="margin-left:10vw; width:80vw;">
+      <div class="container">
+        <div class="section-title mt-4" data-aos="fade-left">
+            <h2>Item Details</h2>
+          {% if messages %}
+              {% for message in messages %}
+                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}" role="alert">
+                  {{message}}
+                </div>
+              {% endfor %}
+          {% endif %}
+        <form method="POST" enctype="multipart/form-data">
+          <div class="row">
+               <div class="col-4 mt-4">
+                <label>Artist Name:</label>
+                {{form.artist_name}}
+               </div>
+               <div class=" col-4 mt-4">
+                <label>Item Name:</label>
+                {{form.item_name}}
+               </div>
+               <div class=" col-4 mt-4">
+                <label>Category:</label>
+                {{form.category}}
+               </div>
+               <div class=" col-4 mt-4">
+                <label>Production Year:</label>
+                {{form.production_year}}
+               </div>
+              <div class=" col-4 mt-4">
+                <label>Classification:</label>
+                {{form.classification}}
+               </div>
+              <div class=" col-4 mt-4">
+                <label>Estimated Price:</label>
+                {{form.estimated_price}}
+               </div>
+              <div class=" col-12 mt-4">
+                <label>Description:</label>
+                {{form.description}}
+               </div>
+              <div class=" col-4 mt-4">
+                <label>Image 1:</label>
+                {{form.image1}}
+               </div>
+              <div class=" col-4 mt-4">
+                <label>Image 2:</label>
+                {{form.image2}}
+               </div><div class=" col-4 mt-4">
+                <label>Image 3:</label>
+                {{form.image3}}
+               </div>
+          </div>
+          {% csrf_token %}
+          <br>
+          <input type="submit" value="Proceed" class="btn btn-success">
+        </form>
+      </div>
+      </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+{% extends temp %}
+{% load static %}
+{% block body_block %}
+<style>
+ @font-face {
+  font-family: 'digital-7';
+  src: url('../fonts/digital-7.ttf');
+}
+.timer {
+    color:black;
+    font-weight:bold;
+    font-size:1em;
+    font-family:'digital-clock-font';
+
+    color:white;
+}
+#countdown-box{
+  padding:1vw;
+  background-color:#C7BDBD;
+
+}
+</style>
+        <!-- ======= Portfolio Section ======= -->
+    <section id="portfolio" class="portfolio" style="width:100vw;">
+      <div class="container" >
+                <div class="row">
+          <div class="col-lg-4">
+            <div class="section-title" data-aos="fade-right">
+              <h2>{{name}}</h2>
+              <p></p>
+            </div>
+          </div>
+          <div class="col-lg-8">
+            <div class="row">
+              {% if auction %}
+                {% for a in auction%}
+                  <div class="col-md-9 d-flex align-items-stretch">
+                    <div class="icon-box" data-aos="zoom-in" data-aos-delay="100">
+                      <div class="icon"><i class="bx bx-home"></i></div>
+                      <h4><a href="{% url 'showAuctionItemsBuyer' a.auction_id %}">{{a.auction_name}}</a></h4>
+                      <h5 class="text-success">{{a.auction_status}}</h5>
+                      <p>{{a.auction_description}}</p>
+                    </div>
+                  </div>
+                {% endfor %}
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="200" >
+          {% if items %}
+            {% for i in items %}
+              <div class="row">
+              <div class="col-lg-4 col-md-6 portfolio-item filter-app">
+                <div class="portfolio-wrap" style="height:30vw;">
+                  {% if i.image1 %}
+                  <img src="{{i.image1.url}}" class="img-fluid" alt="" style="min-height:100%; min-width: 100%; object-fit: cover;">
+                  {% endif %}
+                  <div class="portfolio-info">
+                    {% if i.status == 'Accepted' %}
+                      <h4>Available</h4>
+                    {% else %}
+                      <h4>{{i.status}}</h4>
+                    {% endif %}
+                    <h4>{{i.auction}}</h4>
+                    <p>{{i.artist_name}}</p>
+                    <div class="portfolio-links">
+                      <a href="{% url 'viewItemDetails' i.item_lot %}" title="More Details"><i class="bx bx-link"></i></a>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          {% endif %}
+        </div>
+
+      </div>
+    </section><!-- End Portfolio Section -->
+{% endblock %}

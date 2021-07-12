@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+{% extends temp %}
+{% load static %}
+{% block body_block %}
+<style>
+    #won{
+    color:  #846FAA;}
+</style>
+    <section id="about" class="about bg-white" style="margin-left:10vw; width:100%; min-height:80vh;">
+      <div class="container">
+          <div class="section-title mt-4" data-aos="fade-left">
+            <h2>Won Items</h2>
+          {% if messages %}
+              {% for message in messages %}
+                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}" role="alert">
+                  {{message}}
+                </div>
+              {% endfor %}
+          {% endif %}
+        <div class="table-responsive" style="margin-top:6vh;">
+          <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                  <tr class="text-white" style="background-color:#573E7D;">
+                    <th>Auction</th>
+                    <th>Artist</th>
+                    <th>Category</th>
+                    <th>Total Price</th>
+                    <th>View Details</th>
+                    <th>Payment</th>
+                  </tr>
+              </thead>
+              <tbody>
+                {% if ex %}
+                    {% for i,j in ex %}
+                        <tr>
+                          <td>{{i.auction}} </td>
+                          <td>{{i.artist_name}} </td>
+                          <td>{{i.category}} </td>
+                          <td>£{{j.commission_amount}} </td>
+                          <td><a href="{% url 'viewItemDetails' i.item_lot %}" style="text-decoration:none"><i class="fas fa-edit text-success">View Details</i></a></td>
+                          {% if j.payment_status != 'Cleared' %}
+                            <td><a href="{% url 'clearPayment' i.item_lot %}" style="text-decoration:none"><i class="fas fa-edit text-success">Clear Payment</i></a></td>
+                          {% else %}
+                            <td>Payment Cleared</td>
+                          {% endif %}
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <h1>No won items yet!</h1>
+                {% endif %}
+              </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+{% endblock %}

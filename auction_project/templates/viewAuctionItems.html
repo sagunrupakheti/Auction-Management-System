@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+{% extends "adminDashboard.html" %}
+{% load static %}
+{% block body_block %}
+    <section id="about" class="about bg-white border shadow-sm p-3 mb-5 bg-white rounded" style="margin-left:10vw; width:80vw;">
+      <div class="container">
+          <h1><center><strong>Accepted Auction Items</strong></center></h1>
+          {% if messages %}
+              {% for message in messages %}
+                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}" role="alert">
+                  {{message}}
+                </div>
+              {% endfor %}
+          {% endif %}
+        <div class="table-responsive" style="margin-top:6vh;">
+          <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                  <tr class="text-white" style="background-color:#573E7D;">
+                    <th>Auction</th>
+                    <th>Request by</th>
+                    <th>Item Description</th>
+                    <th>Category</th>
+                    <th>Artist</th>
+                    <th>Estimated price</th>
+                    <th>View Details</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% if itemInfo %}
+                      {% for i in itemInfo %}
+                        <tr>
+                          <td>{{i.auction}} </td>
+                          <td>{{i.user}} </td>
+                          <td>{{i.description}} </td>
+                          <td>{{i.category}} </td>
+                          <td>{{i.artist_name}} </td>
+                          <td>£{{i.estimated_price}}.00 </td>
+                          <td><a href="{% url 'viewItemDetails' i.item_lot %}" style="text-decoration:none"><i class="fas fa-trash-alt text-success">Details</i></a></td>
+                        </tr>
+                      {% endfor %}
+                    {% else %}
+                      <h1>No Requests yet!</h1>
+                  {% endif %}
+              </tbody>
+          </table>
+        </div>
+
+
+      </div>
+    </section>
+{% endblock %}

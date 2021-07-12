@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+{% extends "adminDashboard.html"%}
+{% load static %}
+{% block body_block %}
+<style>
+    #addUser{
+    color:  #846FAA;}
+</style>
+    <!-- ======= Contact Section ======= -->
+    <section section id="about" class="about bg-white" style="margin-left:10vw; width:80vw;">
+      <div class="container">
+        <div class="row">
+            <div class="section-title mt-4" data-aos="fade-left">
+              <h2>Add User</h2>
+
+            {% if messages %}
+              {% for message in messages %}
+                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}" role="alert">
+                  {{message}}
+                </div>
+              {% endfor %}
+            {% endif %}
+            <form method="POST">
+                <div class="row">
+                  <div class=" col-4">
+                    <label>Username:</label>
+                    {{detailsForm.username}}
+                  </div>
+                  <div class=" col-4 ml-6">
+                    <label>Password:</label>
+                    {{detailsForm.password}}
+                  </div>
+                   <div class=" col-4 ml-2">
+                    <label>Email:</label>
+                    {{form.email}}
+                  </div>
+
+                  <div class=" col-4 mt-4">
+                    <label>First Name:</label>
+                    {{form.firstName}}
+                  </div>
+                  <div class=" col-4 ml-2 mt-4">
+                    <label>Last Name:</label>
+                    {{form.lastName}}
+                  </div>
+                  <div class=" col-4 ml-2 mt-4">
+                    <label>Date of Birth:</label>
+                    {{form.dob}}
+                  </div>
+                  <div class=" col-4 mt-4">
+                    <label>Country:</label>
+                    {{form.country}}
+                  </div>
+                  <div class=" col-4 mt-4">
+                    <label>City:</label>
+                    {{form.city}}
+                  </div>
+                  <div class=" col-4 mt-4">
+                    <label>Zip Code:</label>
+                    {{form.zip_code}}
+                  </div>
+                  <div class=" col-8 mt-4">
+                    <label>Address:</label>
+                    {{form.address}}
+                  </div>
+                  <div class=" col-4 ml-2 mt-4">
+                    <label>Country Code:</label>
+                    {{form.country_code}}
+                  </div>
+                  <div class=" col-4 ml-2 mt-4">
+                    <label>Contact Number:</label>
+                    {{form.contact}}
+                  </div>
+                  <div class=" col-4 ml-2 mt-4">
+                    <label>Bank Account Number:</label>
+                    {{form.bank_account_number}}
+                  </div>
+                  <div class=" col-4 ml-2 mt-4">
+                    <label>Bank Sort Code:</label>
+                    {{form.bank_sort_code}}
+                  </div>
+                  <div class=" col-4 ml-2 mt-4">
+                    <label>Staff Type:</label>
+                    {{form.client_type}}
+                  </div>
+                </div>
+              {% csrf_token %}
+              <br>
+              <input type="submit" value="Add Staff" class="btn btn-success">
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </section><!-- End Contact Section -->
+{% endblock %}

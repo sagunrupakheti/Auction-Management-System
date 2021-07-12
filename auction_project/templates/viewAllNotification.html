@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+{% extends temp %}
+{% block body_block %}
+<style>
+    #teacherDash {
+        background-color:#A2A5B2;
+        color:black;
+    }
+    #teacherDash a, i{
+     color:#33364D;
+    }
+    #teacherDash i{
+     color:#33364D;
+    }
+</style>
+  <section id="about" class="about bg-white" style="margin-left:10vw; min-width:80vw;">
+      <div class="container" style="min-height:60vh;">
+          <div class="section-title mt-4" data-aos="fade-left">
+            <h2>All Notifications</h2>
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}" role="alert">
+        {{message}}
+        </div>
+      {% endfor %}
+    {% endif %}
+    {% if notification %}
+      {% for a in notification %}
+ <div class="row">
+            <span class="list-group-item  bg-light">{{a.notification_text}}<br><span style="margin-left:70vw;font-size:0.8em;">{{a.notification_date}}</span></span>
+
+        </div>
+
+        </div>
+      {% endfor %}
+    {% endif %}
+      </div>
+  </section>
+{% endblock %}

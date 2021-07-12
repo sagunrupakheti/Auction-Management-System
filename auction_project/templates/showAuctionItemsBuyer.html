@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+{% extends "buyerDashboard.html"%}
+{% load static %}
+{% block body_block %}
+<style>
+ @font-face {
+  font-family: 'digital-7';
+  src: url('../fonts/digital-7.ttf');
+}
+.timer {
+    color:black;
+    font-weight:bold;
+    font-size:1em;
+    font-family:'digital-clock-font';
+
+    color:white;
+}
+#countdown-box{
+  padding:1vw;
+  background-color:#C7BDBD;
+
+}
+</style>
+        <!-- ======= Portfolio Section ======= -->
+    <section id="portfolio" class="portfolio">
+      <div class="container" >
+
+        <div class="section-title" data-aos="fade-left">
+          <h2>{{name}}</h2>
+            <div id="event-box" style="display:None;" class="mt-4">
+
+            </div>
+            <div id="countdown-box">
+                <div class="spinner-border text-white" role="status"></div>
+            </div>
+          <p>{{description}}</p>
+          <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+        </div>
+
+
+        <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="200" >
+
+          {% if items %}
+            {% for i in items %}
+          <div class="col-lg-4 col-md-6 portfolio-item filter-app">
+            <div class="portfolio-wrap">
+              {% if i.image1 %}
+              <img src="{{i.image1.url}}" class="img-fluid" alt="">
+              {% endif %}
+              <div class="portfolio-info">
+                {% if i.status == 'Accepted' %}
+                  <h4>Available</h4>
+                {% else %}
+                  <h4>{{i.status}}</h4>
+                {% endif %}
+                <h4>{{i.auction}}</h4>
+                <p>{{i.artist_name}}</p>
+                <div class="portfolio-links">
+                  <a href="{% url 'viewItemDetails' i.item_lot %}" title="More Details"><i class="bx bx-link"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+
+      </div>
+    </section><!-- End Portfolio Section -->
+    <script>
+
+        const eventBox = document.getElementById('event-box')
+        const date = new Date()
+        date.toLocaleString('en-US', { timeZone: 'Asia/Kathmandu' })
+        console.log(date)
+        const countdownBox = document.getElementById('countdown-box')
+        console.log('aaa')
+        {% if st == 'Advanced' %}
+          var d = "{{end_date}}"
+          console.log(d)
+          getDate = new Date(d)
+          year = getDate.getFullYear();
+          month = getDate.getMonth();
+          day = getDate.getDate();
+        {% elif st == 'Live' %}
+          year = date.getFullYear();
+          month = date.getMonth();
+          day = date.getDate();
+        {% endif %}
+        const endDate = new Date(year, month, day, 23, 59, 59, 0)
+        ed = Date.parse(endDate)
+<!--        text = eventBox.textContent-->
+<!--        text.toLocaleString('en-US', { timeZone: 'Asia/Kathmandu' })-->
+<!--        console.log(text)-->
+<!--        ed = Date.parse(text)-->
+<!--        console.log(ed)-->
+
+
+        const myCountdown= setInterval(()=>{
+            const currentDate = new Date().getTime()
+            console.log(currentDate)
+            console.log(ed)
+            const difference = ed - currentDate
+            console.log(difference)
+            //days
+            const d = Math.floor(ed/(1000*60*60*24)-(currentDate/(1000*60*60*24)))
+            //hrs
+            const h = Math.floor((ed/(1000*60*60)-(currentDate/(1000*60*60))) % 24)
+            // mins
+            const m = Math.floor((ed/(1000*60)-(currentDate/(1000*60))) % 60)
+            //seconds
+            const s = Math.floor((ed/(1000)-(currentDate/(1000))) % 60)
+
+            if (difference>0){
+            countdownBox.innerHTML = '<span class="timer"><center>'+d+"Days, "+h+" Hours,"+ ""+ m+ " Minutes, "+""+s+" Seconds" +""+'</center></span>'
+            }
+            else{
+               clearInterval(myCountdown)
+               countdownBox.innerHTML =  '<span class="timer">'+"Time Over"+'</span>'
+<!--               setTimeout(function(){ location.reload() }, 5000);-->
+
+            }
+        }, 1000)
+     </script>
+{% endblock %}

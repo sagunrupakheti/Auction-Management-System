@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+{% extends "adminDashboard.html" %}
+{% load static %}
+{% block body_block %}
+    <div class="row col-12">
+        <div class="col-xl-12 col-lg-7" style="margin-left:2vw;margin-top:10vh;">
+            <div class="section-title mt-4" data-aos="fade-left">
+              <h2>Auction Report</h2>
+            <div class="row">
+                <div class="card shadow mb-4 col-2" style="margin-left:1vw;background-color:rgba(153, 160, 255, 0.4)">
+                    <div class="py-3 d-flex flex-row align-items-center justify-content-between" >
+                        <h6 class="m-0 font-weight-bold" ><center><strong>Sold Items</strong></center></h6>
+                    </div>
+                    <hr>
+                    <div class="card-body">
+                        <div class="chart-area">
+                            {% if auction_sales %}
+                                {% for a in auction_sales %}
+                                    {{a.total}}
+                                {% endfor %}
+                            {% else %}
+                                0
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="card shadow mb-4 col-2" style="margin-left:3vw;background-color:rgba(153, 160, 255, 0.4)"">
+                    <div class=" py-3 d-flex flex-row align-items-center justify-content-between" >
+                        <h6 class="m-0 font-weight-bold" ><center><strong>Pending Payment Items</strong></center></h6>
+                    </div>
+                    <hr>
+                    <div class="card-body">
+                        <div class="chart-area">
+                            {% if pending_payment %}
+                                {% for a in pending_payment %}
+                                    {{a.total}}
+                                {% endfor %}
+                            {% else %}
+                                0
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="card shadow mb-4 col-2" style="margin-left:3vw;background-color:rgba(153, 160, 255, 0.4)"">
+                    <div class="py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold"><center><strong>No Bid Items</strong></center></h6>
+                    </div>
+                    <hr>
+                    <div class="card-body">
+                        <div class="chart-area">
+                            {% if approved_items %}
+                                {% for a in approved_items %}
+                                    {{a.total}}
+                                {% endfor %}
+                            {% else %}
+                                0
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="card shadow mb-4 col-2" style="margin-left:3vw;background-color:rgba(153, 160, 255, 0.4)"">
+                    <div class="py-3 d-flex flex-row align-items-center justify-content-between" >
+                        <h6 class="m-0 font-weight-bold" ><center><strong>Total Sale Amount</strong></center></h6>
+                    </div>
+                    <hr>
+                    <div class="card-body">
+                        <div class="chart-area">
+                            {% if final_sale_amount %}
+                                £{{final_sale_amount}}
+                            {% else %}
+                                0
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="card shadow mb-4 col-2" style="margin-left:3vw;background-color:rgba(153, 160, 255, 0.4)"">
+                    <div class=" py-3 d-flex flex-row align-items-center justify-content-between" >
+                        <h6 class="m-0 font-weight-bold" ><center><strong>Total Commission Amount</strong></center></h6>
+                    </div>
+                    <hr>
+                    <div class="card-body">
+                        <div class="chart-area">
+                            {% if final_commission_amount %}
+                                £{{final_commission_amount}}
+                            {% else %}
+                                0
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <div class="row" style="margin-left:1vw;">
+            <div class="card shadow mb-4 col-7">
+                <!-- Card Header - Dropdown -->
+                <div
+                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between" >
+                    <h6 class="m-0 font-weight-bold" ><center><strong>Items and Sales</strong></center></h6>
+                    <script>
+                        $(document).ready(function(){
+                            var ctx = document.getElementById('myChart').getContext('2d');
+                            var myChart = new Chart(ctx, {
+                                type: 'pie',
+                                data: {
+                                    labels: [{% for i in commission %}'{{i.item_info}}',{% endfor %}],
+                                    datasets: [{
+                                        label: 'Sold Price in Pounds',
+                                        data: [{% for i in commission %}'{{i.sold_price}}',{% endfor %}],
+                                        backgroundColor: [
+                                            'rgba(255, 99, 132, 0.4)',
+                                            'rgba(54, 162, 235, 0.4)',
+                                            'rgba(255, 206, 86, 0.4)',
+                                            'rgba(75, 192, 192, 0.4)',
+                                            'rgba(153, 102, 255, 0.4)',
+                                            'rgba(255, 159, 64, 0.4)'
+                                        ],
+                                        borderColor: [
+                                            'rgba(255, 99, 132, 1)',
+                                            'rgba(54, 162, 235, 1)',
+                                            'rgba(255, 206, 86, 1)',
+                                            'rgba(75, 192, 192, 1)',
+                                            'rgba(153, 102, 255, 1)',
+                                            'rgba(255, 159, 64, 1)'
+                                        ],
+                                        borderWidth: 1
+                                    }]
+                                },
+                                options: {
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }
+                            });
+                        });
+                    </script>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="chart-area">
+                       <canvas id="myChart" height="120"></canvas>
+
+                    </div>
+                </div>
+            </div>
+
+        <!-- Pie Chart -->
+        <div class="col-xl-4 col-lg-5"  style="margin-left:2vw;">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div
+                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold "><strong>Auction Statistics</strong></h6></div>
+                    <ul>
+                         <li class="list-group-item" style="margin-left:-1.8vw;"><strong>Total Items:</strong>{{all_items}}</li>
+                        <li class="list-group-item" style="margin-left:-1.8vw;"><strong>Sold Items:</strong>{% if auction_sales %}
+                                {% for a in auction_sales %}
+                                    {{a.total}}
+                                {% endfor %}
+                            {% else %}
+                                0
+                            {% endif %}</li>
+                        <li class="list-group-item" style="margin-left:-1.8vw;"><strong>No Bid Items:</strong>{% if approved_items %}
+                                {% for a in approved_items %}
+                                    {{a.total}}
+                                {% endfor %}
+                            {% else %}
+                                0
+                            {% endif %}</li>
+                        <li class="list-group-item" style="margin-left:-1.8vw;"><strong>Total Sale Amount:</strong> £{{final_sale_amount}}</li>
+                        <li class="list-group-item" style="margin-left:-1.8vw;"><strong>Pending Payment Items:</strong> {% if pending_payment %}
+                                {% for a in pending_payment %}
+                                    {{a.total}}
+                                {% endfor %}
+                            {% else %}
+                                0
+                            {% endif %}</li>
+                        <li class="list-group-item" style="margin-left:-1.8vw;"><strong>Total Commission Amount:</strong> £{{final_commission_amount}}</li>
+                        <li class="list-group-item" style="margin-left:-1.8vw;"><strong>Total Bids: </strong>
+                           {% if total_bids %}
+                                {% for a in total_bids %}
+                                    {{a.total}}
+                                {% endfor %}
+                            {% else %}
+                                0
+                            {% endif %}
+                       </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

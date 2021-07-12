@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+{% extends temp %}
+{% load static %}
+{% block body_block %}
+    <style>
+        #profile{
+        color:  #846FAA;}
+    </style>
+<section id="about" class="about bg-white" style="margin-left:10vw; width:80vw;">
+      <div class="section-title mt-4" data-aos="fade-left">
+              <h2>My Profile</h2>
+          {% if messages %}
+              {% for message in messages %}
+                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}" role="alert">
+                  {{message}}
+                </div>
+              {% endfor %}
+          {% endif %}
+      </div>
+    <div class="column">
+    </div>
+    <div class="row">
+        <ul style=" width:50vw;">
+             <a href="editProfile"><input type="submit" class="btn btn-success" value="Edit Profile" style="margin-left:70vw;"></a>
+            {% if userInfo %}
+                {% for u in userInfo %}
+                    {% if u.profile_pic %}
+                        <img class="card-img-top" src="{{u.profile_pic.url}}" alt="Card image cap" style="width:70vw;max-height:48vh;object-fit:contain;">
+                    {% endif %}
+                    <form method="POST" enctype="multipart/form-data" >
+                        {% csrf_token %}
+                        <div class="col-6">
+                            {{form}}
+                        </div>
+                        <input type="submit" value="Change Picture" class="btn btn-success">
+                        <a class="btn btn-secondary" href="">Change Password</a>
+                    </form>
+
+                    <div class="row col-12">
+                        <ul class="list-group list-group-flush">
+                         <div class="row">
+                             <div class="col-6">
+                                 <li class="list-group-item"><strong>First Name:</strong></li>
+                             </div>
+                             <div class="col-6">
+                                <li class="list-group-item" style="margin-left:-2vw">{{u.firstName}}</li>
+                             </div>
+                         </div>
+                          <div class="row">
+                             <div class="col-6">
+                                 <li class="list-group-item"><strong>Last Name:</strong></li>
+                             </div>
+                             <div class="col-6">
+                                <li class="list-group-item" style="margin-left:-2vw">{{u.lastName}}</li>
+                             </div>
+                         </div>
+                          <div class="row">
+                             <div class="col-6">
+                                 <li class="list-group-item"><strong>Email:</strong></li>
+                             </div>
+                             <div class="col-6">
+                                <li class="list-group-item" style="margin-left:-2vw">{{u.email}}</li>
+                             </div>
+                         </div>
+                         <div class="row">
+                             <div class="col-6">
+                                 <li class="list-group-item"><strong>Date of Birth:</strong></li>
+                             </div>
+                             <div class="col-6">
+                                <li class="list-group-item" style="margin-left:-2vw">{{u.dob}}</li>
+                             </div>
+                         </div>
+                          <div class="row">
+                             <div class="col-6">
+                                 <li class="list-group-item"><strong>Country:</strong></li>
+                             </div>
+                             <div class="col-6">
+                                <li class="list-group-item" style="margin-left:-2vw">{{u.country}}</li>
+                             </div>
+                         </div>
+                          <div class="row">
+                             <div class="col-6">
+                                 <li class="list-group-item"><strong>City:</strong></li>
+                             </div>
+                             <div class="col-6">
+                                <li class="list-group-item" style="margin-left:-2vw">{{u.city}}</li>
+                             </div>
+                         </div>
+                          <div class="row">
+                             <div class="col-6">
+                                 <li class="list-group-item"><strong>Zip Code:</strong></li>
+                             </div>
+                             <div class="col-6">
+                                <li class="list-group-item" style="margin-left:-2vw">{{u.zip_code}}</li>
+                             </div>
+                         </div>
+                          <div class="row">
+                             <div class="col-6">
+                                 <li class="list-group-item"><strong>Address:</strong></li>
+                             </div>
+                             <div class="col-6">
+                                <li class="list-group-item" style="margin-left:-2vw">{{u.address}}</li>
+                             </div>
+                         </div>
+                          <div class="row">
+                             <div class="col-6">
+                                 <li class="list-group-item"><strong>Country code:</strong></li>
+                             </div>
+                             <div class="col-6">
+                                <li class="list-group-item" style="margin-left:-2vw">{{u.country_code}}</li>
+                             </div>
+                         </div>
+                          <div class="row">
+                             <div class="col-6">
+                                 <li class="list-group-item"><strong>Contact:</strong></li>
+                             </div>
+                             <div class="col-6">
+                                <li class="list-group-item" style="margin-left:-2vw">{{u.contact}}</li>
+                             </div>
+                         </div>
+                          <div class="row">
+                             <div class="col-6">
+                                 <li class="list-group-item"><strong>Bank Account Number:</strong></li>
+                             </div>
+                             <div class="col-6">
+                                <li class="list-group-item" style="margin-left:-2vw">{{u.bank_account_number}}</li>
+                             </div>
+                         </div>
+                          <div class="row">
+                             <div class="col-6">
+                                 <li class="list-group-item"><strong>Bank Sort Code:</strong></li>
+                             </div>
+                             <div class="col-6">
+                                <li class="list-group-item" style="margin-left:-2vw">{{u.bank_sort_code}}</li>
+                             </div>
+                         </div>
+                          <div class="row">
+                             <div class="col-6">
+                                 <li class="list-group-item"><strong>User Type:</strong></li>
+                             </div>
+                             <div class="col-6">
+                                <li class="list-group-item" style="margin-left:-2vw">{{u.client_type}}</li>
+                             </div>
+                         </div>
+                      </ul>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </ul>
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+{% extends temp %}
+{% load static %}
+{% block body_block %}
+<style>
+    #dash{
+    color:  #846FAA;}
+</style>
+    <section id="portfolio" class="portfolio" style="width:100%; min-height:70vh">
+      <div class="container" >
+        <div class="row">
+          <form method="POST">
+            {% csrf_token %}
+            <div class="input-group">
+              <div class="form-outline col-6">
+                <input id="search-input" type="search" id="form1" class="form-control" placeholder="Search for items" name="searchBar">
+              </div>
+              <button id="search-button" type="button" class="btn" style="background-color: #846FAA; color:white;">
+                <i class="bi bi-search font-bold"></i>
+                <input type="submit" value=""  style="background-color: #846FAA;border:0;" name="searchFor">
+              </button>
+          </form>
+          {% for c in category %}
+              <a href="{% url 'categoryItems' c.category_name %}" class="nav-link text-success" style="">{{c.category_name}}</a>
+          {% endfor %}
+            </div>
+            <br>
+            {% if messages %}
+              {% for message in messages %}
+                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}" role="alert">
+                  {{message}}
+                </div>
+              {% endfor %}
+            {% endif %}
+        </div>
+        <div class="section-title mt-4" data-aos="fade-left">
+          <h2>Search Items</h2>
+          <div>
+            <form method="POST">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col-3 ml-3">
+                  <select class="form-control" name="artist_name">
+                     <option value="">Select Artist</option>
+                    {% for i in items %}
+                      <option value="{{i.artist_name}}">{{i.artist_name}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="col-3 ml-3">
+                  <select class="form-control" name="category">
+                    <option value="">Select Category</option>
+                    {% for c in category %}
+                      <option value="{{c.category_name}}">{{c.category_name}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="col-3 ml-3">
+                  <select class="form-control" name="auction_date">
+                    <option value="">Select  Date</option>
+                    {% for a in ac %}
+                      <option value="{{a.auction_date}}">{{a.auction_date}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="col-3 ml-3">
+                  <select class="form-control" name="classification">
+                    <option value="">Select Classification </option>
+                    <option value="Landscape">Landscape</option>
+                    <option value="Seascape">Seascape</option>
+                    <option value="Portrait">Portrait</option>
+                    <option value="Figure">Figure</option>
+                    <option value="Still Life">Still Life</option>
+                    <option value="Nude">Nude</option>
+                    <option value="Animal">Animal</option>
+                    <option value="Abstract">Abstract</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div class="col-2 ml-3">
+                <input type="range" min="1000" max="100000" value="50" class="slider" id="myRange" onchange="updateTextInput(this.value);" style="width:20vw;" name="estimated_price">
+                Price Range: £<input type="text" id="textInput" value="1000" style="border:none; width:4vw;">
+                </div>
+                <script>
+                  function updateTextInput(val) {
+                    document.getElementById('textInput').value=val;
+                  }
+                </script>
+                <div class="col-3 ml-5 mt-3" style="margin-left:7vw;">
+                  <input type="submit" value="Filter Items" class="btn btn-success" name="filterSearch">
+                </div>
+              </div>
+            </form>
+          </div>
+          </div>
+        </div>
+              <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="200" style="margin-left:5vw">
+          {% if items %}
+            {% for i in items %}
+          <div class="col-lg-4 col-md-6 portfolio-item filter-app">
+            <div class="portfolio-wrap" style="height:50vh;width:25vw">
+              {% if i.image1 %}
+              <img src="{{i.image1.url}}" class="img-fluid" alt="" style="min-height:100%; min-width: 100%; object-fit: cover;">
+              {% endif %}
+              <div class="portfolio-info">
+                {% if i.status == 'Accepted' %}
+                  <h4>Available</h4>
+                {% else %}
+                  <h4>{{i.status}}</h4>
+                {% endif %}
+                <h4>{{i.auction}}</h4>
+                <p>{{i.artist_name}}</p>
+                <div class="portfolio-links">
+                  <a href="{% url 'viewItemDetails' i.item_lot %}" title="More Details"><i class="bx bx-link"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+            {% endfor %}
+          {% else %}
+            <h3>No Items Available</h3>
+            {% endif %}
+        </div>
+      </div>
+   </section>
+
+{% endblock %}

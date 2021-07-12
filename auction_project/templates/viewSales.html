@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+{% extends "adminDashboard.html"%}
+{% load static %}
+{% block body_block %}
+    <style>
+        #sales{
+        color:  #846FAA;}
+    </style>
+   <section id="about" class="about bg-white" style="margin-left:10vw; width:80vw;min-height:80vh;">
+      <div class="container">
+          <div class="table-responsive" style="margin-top:6vh;">
+            <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+              <div class="section-title mt-4" data-aos="fade-left">
+              <h2>Expired Auctions</h2>
+              <thead>
+                  <tr class="text-white" style="background-color:#573E7D;">
+                    <th>Auction Name</th>
+                    <th>Auction Date</th>
+                    <th>Sold</th>
+                    <th>On Hold</th>
+                    <th>Pending</th>
+                    <th>View Report</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% if auctionInfo %}
+                      {% for a in auctionInfo %}
+                        <tr>
+                          <td>{{a.auction_name}} </td>
+                          <td>{{a.auction_date}} </td>
+                          <td><a href="{% url 'viewSoldItems' a.auction_id %}" style="text-decoration:none"><i class="fas fa-edit text-success">View Sold Items</i></a></td>
+                          <td><a href="{% url 'viewHoldItems' a.auction_id %}" style="text-decoration:none"><i class="fas fa-edit text-danger">View On Hold Items</i></a></td>
+                          <td><a href="{% url 'viewPendingItems' a.auction_id %}" style="text-decoration:none"><i class="fas fa-edit text-success">View Pending Items</i></a></td>
+                          <td><a href="{% url 'auctionReport' a.auction_id %}" style="text-decoration:none"><i class="fas fa-edit text-success">View Report</i></a></td>
+                        </tr>
+                      {% endfor %}
+                    {% else %}
+                      <h1>No Auctions yet!</h1>
+                  {% endif %}
+              </tbody>
+            </table>
+          </div>
+      </div>
+   </section>
+{% endblock %}

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+{% extends "adminDashboard.html"%}
+{% load static %}
+{% block body_block %}
+    <style>
+        #auction{
+        color:  #846FAA;}
+    </style>
+    <section id="about" class="about bg-white" style="margin-left:10vw; width:80vw;">
+      <div class="container">
+         <div class="section-title mt-4" data-aos="fade-left">
+              <h2>Add Auctions</h2>
+          {% if messages %}
+              {% for message in messages %}
+                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}" role="alert">
+                  {{message}}
+                </div>
+              {% endfor %}
+          {% endif %}
+        <form method="POST">
+          {{form.as_table}}
+          {% csrf_token %}
+          <br>
+          <input type="submit" value="Add Auction" class="btn btn-secondary">
+        </form>
+        <div class="table-responsive" style="margin-top:6vh;">
+          <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+              <div class="section-title mt-4" data-aos="fade-left">
+              <h2>All Auctions</h2>
+              <thead>
+                  <tr class="text-white" style="background-color:#573E7D;">
+                    <th>Auction Name</th>
+                    <th>Auction Date</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                    <th>View Items</th>
+                    <th>Status</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% if auctionInfo %}
+                      {% for a in auctionInfo %}
+                        <tr>
+                          <td>{{a.auction_name}} </td>
+                          <td>{{a.auction_date}} </td>
+                          <td><a href="{% url 'editAuction' a.auction_id %}" style="text-decoration:none"><i class="fas fa-edit text-success">Edit</i></a></td>
+                          <td><a href="{% url 'deleteAuction' a.auction_id %}" style="text-decoration:none"><i class="fas fa-edit text-danger">Delete</i></a></td>
+                          <td><a href="{% url 'viewAuctionItems' a.auction_id %}" style="text-decoration:none"><i class="fas fa-edit text-success">View Items</i></a></td>
+                          <td>{{a.auction_status}} </td>
+                        </tr>
+                      {% endfor %}
+                    {% else %}
+                      <h1>No Auctions yet!</h1>
+                  {% endif %}
+              </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+{% endblock %}

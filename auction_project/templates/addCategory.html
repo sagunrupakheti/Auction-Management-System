@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+{% extends "adminDashboard.html"%}
+{% load static %}
+{% block body_block %}
+    <style>
+        #category{
+        color:  #846FAA;}
+    </style>
+    <section id="about" class="about bg-white" style="margin-left:10vw; width:80vw;">
+      <div class="container">
+          <div class="section-title mt-4" data-aos="fade-left">
+              <h2>Add Category</h2>
+          {% if messages %}
+              {% for message in messages %}
+                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}" role="alert">
+                  {{message}}
+                </div>
+              {% endfor %}
+          {% endif %}
+        <form method="POST">
+            <div class="row">
+              <div class=" col-4">
+                <label>Category Name:</label>
+                {{form.category_name}}
+              </div>
+            </div>
+              <div class=" col-12">
+                <label>Category Description:</label>
+                {{form.category_description}}
+              </div>
+          {% csrf_token %}
+          <br>
+          <input type="submit" value="Add Category" class="btn btn-success">
+        </form>
+          </div>
+        <div class="table-responsive" style="margin-top:6vh;">
+          <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+              <div class="section-title mt-4" data-aos="fade-left">
+              <h2>All Categories</h2>
+              <thead>
+                  <tr class="text-white" style="background-color:#573E7D;">
+                    <th>Category Name</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% if categoryInfo %}
+                      {% for e in categoryInfo %}
+                        <tr>
+                          <td>{{e.category_name}} </td>
+                          <td><a href="{% url 'editCategory' e.category_name %}" style="text-decoration:none"><i class="fas fa-edit text-success">Edit</i></a></td>
+                          <td><a href="{% url 'deleteCategory' e.category_name %}" style="text-decoration:none"><i class="fas fa-edit text-danger">Delete</i></a></td>
+                        </tr>
+                      {% endfor %}
+                    {% else %}
+                      <h1>No categories yet!</h1>
+                  {% endif %}
+              </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+{% endblock %}

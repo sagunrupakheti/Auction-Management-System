@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+{% extends temp %}
+{% load static %}
+{% csrf_token %}
+{% block body_block %}
+<style>
+ @font-face {
+  font-family: 'digital-7';
+  src: url('../fonts/digital-7.ttf');
+}
+.timer {
+    color:black;
+    font-weight:bold;
+    font-size:1.2em;
+    font-family:'digital-clock-font';
+}
+#countdown-box{
+margin-top:1vw;
+}
+</style>
+<script
+  src="https://code.jquery.com/jquery-3.6.0.js"
+  integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+  crossorigin="anonymous">
+</script>
+    <section id="portfolio-details" class="portfolio-details" class="bg-white" style="padding-left:9vw;padding-right:9vw;">
+      {% if messages %}
+              {% for message in messages %}
+                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}" role="alert">
+                  {{message}}
+                </div>
+              {% endfor %}
+          {% endif %}
+      <div class="container">
+        {% if ex %}
+        {% for i,j in ex %}
+        <div class="row gy-4" >
+          <div class="col-lg-8 bg-white">
+            <div class="portfolio-details-slider swiper-container">
+              <div class="swiper-wrapper align-items-center" style="cursor:zoom-in; max-height:140vh;">
+                {% if i.image1 %}
+                  <div class="swiper-slide" >
+                    <img src="{{i.image1.url}}" alt="">
+                  </div>
+                {% endif %}
+                {% if i.image2 %}
+                  <div class="swiper-slide">
+                    <img src="{{i.image2.url}}" alt="" style="object-fit:contain" >
+
+                  </div>
+                {% endif %}
+                {% if i.image3 %}
+                  <div class="swiper-slide">
+                    <img src="{{i.image3.url}}" alt="">
+                  </div>
+                {% endif %}
+              </div>
+              <div class="swiper-pagination"></div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="portfolio-info bg-white">
+              {% if temp == 'buyerDashboard.html' or temp == 'jointDashboard.html' %}
+                {% if bid %}
+                  {% for b in bid %}
+                <center>
+                  <form method="POST" >
+                    {% csrf_token %}
+                    <h3><strong>Current Bid Amount: </strong>£<p id="currentBid"></p></h3>
+                    <input type="number" min={{b.current_bid}} editable="false" placeholder={{b.current_bid}} class="form-control" name="bidAmount" id="bidAmount">
+                    <input type="submit" value="Place Bid" class="form-control btn-secondary mt-1 col-md-2 mainBtn" name="placeBid">
+                    <br>
+                  </form>
+                </center>
+              {% endfor %}
+              {% endif %}
+              {% endif %}
+              <h3>Item Specifications</h3>
+              <ul>
+                <h3>Item lot: {{i.item_lot}}</h3>
+                <li><strong>Item name: </strong>{{i.item_name}}</li>
+                <li><strong>Auction: </strong>{{i.auction}}</li>
+                <li><strong>Category: </strong>{{i.category}} </li>
+                <li><strong>Request By: </strong>{{i.user}}</li>
+                <li><strong>Artist Name: </strong>{{i.artist_name}}</li>
+                <li><strong>Production Year: </strong>{{i.production_year}}A.D.</li>
+                <li><strong>Classification: </strong>{{i.classification}}</li>
+                <li><strong>Estimated Price: </strong>£{{i.estimated_price}}.00</li>
+                {% if val == 'D' %}
+                  <li><strong>Medium: </strong>{{j.medium}}</li>
+                  <li><strong>Framed: </strong>{{j.frame_status}}</li>
+                  <li><strong>Height: </strong>{{j.height}}cm</li>
+                  <li><strong>Length: </strong>{{j.length}}cm</li>
+                {% endif %}
+                {% if val == 'P' %}
+                  <li><strong>Medium: </strong>{{j.medium}}</li>
+                  <li><strong>Framed: </strong>{{j.frame_status}}</li>
+                  <li><strong>Height: </strong>{{j.height}}cm</li>
+                  <li><strong>Length: </strong>{{j.length}}cm</li>
+                {% endif %}
+                {% if val == 'PI' %}
+                  <li><strong>Type: </strong>{{j.type}}</li>
+                  <li><strong>Height: </strong>{{j.height}}cm</li>
+                  <li><strong>Length: </strong>{{j.length}}cm</li>
+                {% endif %}
+                {% if val == 'S' %}
+                  <li><strong>Material: </strong>{{j.material}}</li>
+                  <li><strong>Height: </strong>{{j.height}}cm</li>
+                  <li><strong>Length: </strong>{{j.length}}cm</li>
+                  <li><strong>Width: </strong>{{j.width}}cm</li>
+                  <li><strong>Weight: </strong>{{j.weight}}kg</li>
+                {% endif %}
+                {% if val == 'C' %}
+                  <li><strong>Material: </strong>{{j.material}}</li>
+                  <li><strong>Height: </strong>{{j.height}}cm</li>
+                  <li><strong>Length: </strong>{{j.length}}cm</li>
+                  <li><strong>Width: </strong>{{j.width}}cm</li>
+                  <li><strong>Weight: </strong>{{j.weight}}kg</li>
+                {% endif %}
+                <div id="event-box" style="display:None;" class="mt-4">
+
+                </div>
+                <div id="countdown-box">
+                  <div class="spinner-border text-white" role="status"></div>
+                </div>
+              </ul>
+            </div>
+            <div class="portfolio-description bg-white mt-4">
+              <h2>Description</h2>
+              <p>
+                {{i.description}}
+              </p>
+                {% if temp == 'evaluatorDashboard.html' %}
+                    {% if status == 'Pending' %}
+                        <button class="btn btn-block bg-danger mt-4" >
+                                <a href="{% url 'declineItem' i.item_lot %}" style="text-decoration:none;color:white;"><i class="fas fa-arrow-down"></i><span>Decline Item</span></a>
+                        </button>
+                    {% endif %}
+                {% endif %}
+            </div>
+          </div>
+
+        </div>
+      </div>
+            {% if temp == 'evaluatorDashboard.html' %}
+                {% if status == 'Pending' %}
+                 <div>
+                    <form method="POST">
+                      {% csrf_token %}
+                        <textarea class="form-control col-6" name="evaluationText" placeholder="Evaluation Report"></textarea>
+                        <br>
+                      <select name="selectedAuction" class="form-control">
+                          <option value=''>Select Auction</option>
+                          {% for a in auction %}
+                            <option value={{a.auction_id}}>{{a.auction_name}}</option>
+                          {% endfor %}
+                      </select>
+                        <input type="submit" class="btn btn-block bg-success mt-4" style="color:white;" value="Accept Item" name="auctionLive">
+                    </form>
+                </div>
+                {% endif %}
+              {% endif %}
+        <div class="portfolio-description bg-white mt-4" style="width:55vw;">
+              <h2>Evaluation Report</h2>
+                 {% if status == 'Accepted' %}
+                    {{i.evaluation_text}}
+                {% endif%}
+              {% endfor %}
+                {% endif %}
+
+        </div>
+          <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="login.html">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    </section><!-- End Portfolio Details Section -->
+    <script>
+      $(document).ready(function(){
+        setInterval(function()
+        {
+        $.ajax({
+          type:'GET',
+          url: "{% url 'sendBid' item %}",
+          success: function(response){
+            console.log(response)
+            const a = document.getElementById('currentBid')
+            a.innerHTML =  response.currBid
+          },
+          error: function(response){
+
+          }
+        });
+        },1000);
+      });
+    </script>
+     <script>
+
+        const eventBox = document.getElementById('event-box')
+        const date = new Date()
+        date.toLocaleString('en-US', { timeZone: 'Asia/Kathmandu' })
+        console.log(date)
+        const countdownBox = document.getElementById('countdown-box')
+        console.log('aaa')
+        {% if st == 'Advanced' %}
+          var d = "{{end_date}}"
+          console.log(d)
+          getDate = new Date(d)
+          year = getDate.getFullYear();
+          month = getDate.getMonth();
+          day = getDate.getDate();
+        {% elif st == 'Live' %}
+          year = date.getFullYear();
+          month = date.getMonth();
+          day = date.getDate();
+        {% endif %}
+        const endDate = new Date(year, month, day, 23, 59, 59, 0)
+        ed = Date.parse(endDate)
+<!--        text = eventBox.textContent-->
+<!--        text.toLocaleString('en-US', { timeZone: 'Asia/Kathmandu' })-->
+<!--        console.log(text)-->
+<!--        ed = Date.parse(text)-->
+<!--        console.log(ed)-->
+
+
+        const myCountdown= setInterval(()=>{
+            const currentDate = new Date().getTime()
+            console.log(currentDate)
+            console.log(ed)
+            const difference = ed - currentDate
+            console.log(difference)
+            //days
+            const d = Math.floor(ed/(1000*60*60*24)-(currentDate/(1000*60*60*24)))
+            //hrs
+            const h = Math.floor((ed/(1000*60*60)-(currentDate/(1000*60*60))) % 24)
+            // mins
+            const m = Math.floor((ed/(1000*60)-(currentDate/(1000*60))) % 60)
+            //seconds
+            const s = Math.floor((ed/(1000)-(currentDate/(1000))) % 60)
+
+            if (difference>0){
+            countdownBox.innerHTML = '<span class="timer" style="color:red;">'+d+"d, "+h+"h, "+ ""+ m+ "m, "+""+s+"s" +""+'</span>'
+            }
+            else{
+               clearInterval(myCountdown)
+               countdownBox.innerHTML =  '<span class="timer">'+"Time Over"+'</span>'
+<!--               setTimeout(function(){ location.reload() }, 5000);-->
+
+            }
+        }, 1000)
+     </script>
+{% endblock %}
+

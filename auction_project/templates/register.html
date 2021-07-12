@@ -1,0 +1,5 @@
+<form method="POST">
+  {{form.as_table}}
+  {% csrf_token %}
+  <input type="submit" value="Send Request">
+</form>

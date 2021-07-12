@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+{% extends temp %}
+{% load static %}
+{% block body_block %}
+<section id="about" class="about bg-white" style="margin-left:10vw; width:80vw;">
+      <div class="container">
+           <div class="section-title mt-4" data-aos="fade-left">
+              <h2>Edit Profile</h2>
+          <a href="jointRequest"><input type="submit" class="btn btn-success" value="Request for Joint Account" style="margin-left:65vw;"></a>
+          {% if messages %}
+              {% for message in messages %}
+                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}" role="alert">
+                  {{message}}
+                </div>
+              {% endfor %}
+          {% endif %}
+      </div>
+    <div class="row">
+        <form method="POST">
+            <div class="row">
+                  <div class=" col-4 mt-4">
+                    <label>Email:</label>
+                    {{form.email}}
+                  </div>
+                  <div class=" col-4 mt-4">
+                    <label>First Name:</label>
+                    {{form.firstName}}
+                  </div>
+                  <div class=" col-4 ml-2 mt-4">
+                    <label>Last Name:</label>
+                    {{form.lastName}}
+                  </div>
+                  <div class=" col-4 ml-2 mt-4">
+                    <label>Date of Birth:</label>
+                    {{form.dob}}
+                  </div>
+                  <div class=" col-4 mt-4">
+                    <label>Country:</label>
+                    {{form.country}}
+                  </div>
+                  <div class=" col-4 mt-4">
+                    <label>City:</label>
+                    {{form.city}}
+                  </div>
+                  <div class=" col-4 mt-4">
+                    <label>Zip Code:</label>
+                    {{form.zip_code}}
+                  </div>
+                  <div class=" col-8 mt-4">
+                    <label>Address:</label>
+                    {{form.address}}
+                  </div>
+                  <div class=" col-4 ml-2 mt-4">
+                    <label>Country Code:</label>
+                    {{form.country_code}}
+                  </div>
+                  <div class=" col-4 ml-2 mt-4">
+                    <label>Contact Number:</label>
+                    {{form.contact}}
+                  </div>
+                  <div class=" col-4 ml-2 mt-4">
+                    <label>Bank Account Number:</label>
+                    {{form.bank_account_number}}
+                  </div>
+                  <div class=" col-4 ml-2 mt-4">
+                    <label>Bank Sort Code:</label>
+                    {{form.bank_sort_code}}
+                  </div>
+                </div>
+            {% csrf_token %}
+            <br>
+            <input type="submit" class="btn btn-success" value="Edit Profile">
+        </form>
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,18 @@
+
+**************************
+Requirements
+******************************
+
+
+1. Install anaconda
+
+2. Recommended IDE - Pycharm
+
+3. Create an environment in the IDE
+
+4. Activate the environment
+
+5. Add a superuser for accessing the data
+
+6. Run the server
+

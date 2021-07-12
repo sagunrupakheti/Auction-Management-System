@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+{% extends "sellerDashboard.html"%}
+{% load static %}
+{% block body_block %}
+    <section id="about" class="about bg-white" style="margin-left:10vw; width:80vw;">
+      <div class="container">
+         <div class="section-title mt-4" data-aos="fade-left">
+            <h2>Item Details</h2>
+          {% if messages %}
+              {% for message in messages %}
+                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}" role="alert">
+                  {{message}}
+                </div>
+              {% endfor %}
+          {% endif %}
+        <form method="POST">
+          {{form.as_table}}
+          {% csrf_token %}
+          <br>
+          <input type="submit" value="Send Request" class="btn btn-success">
+        </form>
+      </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+{% extends "buyerDashboard.html"%}
+{% load static %}
+{% block body_block %}
+<style>
+ @font-face {
+  font-family: 'digital-7';
+  src: url('../fonts/digital-7.ttf');
+}
+.timer {
+    color:black;
+    font-weight:bold;
+    font-size:1em;
+    font-family:'digital-clock-font';
+
+    color:white;
+}
+#countdown-box{
+  margin-bottom:4vw;
+  padding:1vw;
+  background-color:#C7BDBD;
+
+}
+</style>
+        <!-- ======= Portfolio Section ======= -->
+    <section id="portfolio" class="portfolio" style="width:100%">
+      <div class="container" >
+
+        <div class="section-title" data-aos="fade-left">
+          <h2>Auction Items</h2>
+          <div>
+            <form method="POST">
+              {% csrf_token %}
+              <div class="row">
+                <div class="  col-3 ml-3">
+                  <select class="form-control" name="artist_name">
+                     <option value="">Select Artist</option>
+                    {% for i in items %}
+                      <option value="{{i.artist_name}}">{{i.artist_name}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="col-3 ml-3">
+                  <select class="form-control" name="category">
+                    <option value="">Select Category</option>
+                    {% for c in category %}
+                      <option value="{{c.category_name}}">{{c.category_name}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="col-3 ml-3">
+                  <select class="form-control" name="auction_date">
+                    <option value="">Select  Date</option>
+                    {% for a in ac %}
+                      <option value="{{a.auction_date}}">{{a.auction_date}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="col-3 ml-3">
+                  <select class="form-control" name="classification">
+                    <option value="">Select Classification </option>
+                    <option value="Landscape">Landscape</option>
+                    <option value="Seascape">Seascape</option>
+                    <option value="Portrait">Portrait</option>
+                    <option value="Figure">Figure</option>
+                    <option value="Still Life">Still Life</option>
+                    <option value="Nude">Nude</option>
+                    <option value="Animal">Animal</option>
+                    <option value="Abstract">Abstract</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div class="col-2 ml-3">
+                <input type="range" min="1000" max="100000" value="50" class="slider" id="myRange" onchange="updateTextInput(this.value);" style="width:20vw;" name="estimated_price">
+                Price Range: £<input type="text" id="textInput" value="1000" style="border:none; width:4vw;">
+                </div>
+                <script>
+                  function updateTextInput(val) {
+                    document.getElementById('textInput').value=val;
+                  }
+                </script>
+                <div class="col-3 ml-3 mt-3">
+                  <input type="submit" value="Filter" class="btn btn-success">
+                </div>
+              </div>
+            </form>
+          </div>
+          </div>
+        </div>
+        <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="200" style="margin-left:7vw">
+          {% if items %}
+            {% for i in items %}
+          <div class="col-lg-4 col-md-6 portfolio-item filter-app">
+            <div class="portfolio-wrap">
+              {% if i.image1 %}
+              <img src="{{i.image1.url}}" class="img-fluid" alt="">
+              {% endif %}
+              <div class="portfolio-info">
+                {% if i.status == 'Accepted' %}
+                  <h4>Available</h4>
+                {% else %}
+                  <h4>{{i.status}}</h4>
+                {% endif %}
+                <h4>{{i.auction}}</h4>
+                <p>{{i.artist_name}}</p>
+                <div class="portfolio-links">
+                  <a href="{% url 'viewItemDetails' i.item_lot %}" title="More Details"><i class="bx bx-link"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+            {% endfor %}
+          {% else %}
+            <h3>No Items Available</h3>
+            {% endif %}
+        </div>
+
+      </div>
+    </section><!-- End Portfolio Section -->
+    <script>
+
+        const eventBox = document.getElementById('event-box')
+        const date = new Date()
+        date.toLocaleString('en-US', { timeZone: 'Asia/Kathmandu' })
+        console.log(date)
+        const countdownBox = document.getElementById('countdown-box')
+        console.log('aaa')
+        {% if status == 'Advanced' %}
+          var d = "{{end_date}}"
+          console.log(d)
+          getDate = new Date(d)
+          year = getDate.getFullYear();
+          month = getDate.getMonth();
+          day = getDate.getDate();
+        {% elif status == 'Live' %}
+          year = date.getFullYear();
+          month = date.getMonth();
+          day = date.getDate();
+        {% endif %}
+        const endDate = new Date(year, month, day, 23, 59, 59, 0)
+        ed = Date.parse(endDate)
+<!--        text = eventBox.textContent-->
+<!--        text.toLocaleString('en-US', { timeZone: 'Asia/Kathmandu' })-->
+<!--        console.log(text)-->
+<!--        ed = Date.parse(text)-->
+<!--        console.log(ed)-->
+
+
+        const myCountdown= setInterval(()=>{
+            const currentDate = new Date().getTime()
+            console.log(currentDate)
+            console.log(ed)
+            const difference = ed - currentDate
+            console.log(difference)
+            //days
+            const d = Math.floor(ed/(1000*60*60*24)-(currentDate/(1000*60*60*24)))
+            //hrs
+            const h = Math.floor((ed/(1000*60*60)-(currentDate/(1000*60*60))) % 24)
+            // mins
+            const m = Math.floor((ed/(1000*60)-(currentDate/(1000*60))) % 60)
+            //seconds
+            const s = Math.floor((ed/(1000)-(currentDate/(1000))) % 60)
+
+            if (difference>0){
+            countdownBox.innerHTML = '<span class="timer"><center>'+d+"Days, "+h+" Hours,"+ ""+ m+ " Minutes, "+""+s+" Seconds" +""+'</center></span>'
+            }
+            else{
+               clearInterval(myCountdown)
+               countdownBox.innerHTML =  '<span class="timer">'+"Time Over"+'</span>'
+<!--               setTimeout(function(){ location.reload() }, 5000);-->
+
+            }
+        }, 1000)
+     </script>
+{% endblock %}

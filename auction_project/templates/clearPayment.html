@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+{% extends "buyerDashboard.html"%}
+{% load static %}
+{% block body_block %}
+    <section id="portfolio" class="portfolio">
+      {% if messages %}
+              {% for message in messages %}
+                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}" role="alert">
+                  {{message}}
+                </div>
+              {% endfor %}
+          {% endif %}
+      <div class="container">
+        {% if ex %}
+        {% for i,j in ex %}
+        <div class="row gy-4" >
+          <div class="col-lg-8 bg-white">
+            <div class="portfolio-details-slider swiper-container">
+              <div class="swiper-wrapper align-items-center">
+                {% if i.image1 %}
+                  <div class="swiper-slide">
+                    <img src="{{i.image1.url}}" alt="">
+                  </div>
+                {% endif %}
+                {% if i.image2 %}
+                  <div class="swiper-slide">
+                    <img src="{{i.image2.url}}" alt="" style="object-fit:contain">
+                  </div>
+                {% endif %}
+                {% if i.image3 %}
+                  <div class="swiper-slide">
+                    <img src="{{i.image3.url}}" alt="">
+                  </div>
+                {% endif %}
+              </div>
+              <div class="swiper-pagination"></div>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="portfolio-info bg-white">
+              {% if temp == 'buyerDashboard.html' %}
+                {% if bid %}
+                  {% for b in bid %}
+                <center>
+                  <form method="POST" >
+                    {% csrf_token %}
+                    <h3><strong>Current Bid Amount: </strong>£{{b.current_bid}}</h3>
+                    <input type="number" min={{b.old_bid}} editable="false" placeholder={{b.old_bid}} class="form-control" name="bidAmount">
+                    <input type="submit" value="Place Bid" class="form-control btn-secondary mt-1 col-md-2">
+                    <br>
+                  </form>
+                </center>
+              {% endfor %}
+              {% endif %}
+              {% endif %}
+              <h3>Item Specifications</h3>
+              <ul>
+                <li><strong>Auction: </strong>{{i.auction}}</li>
+                <li><strong>Category: </strong>{{i.category}} </li>
+                <li><strong>Seller: </strong>{{i.user}}</li>
+                <li><strong>Artist Name: </strong>{{i.artist_name}}</li>
+                <li><strong>Production Year: </strong>{{i.production_year}}A.D.</li>
+                <li><strong>Classification: </strong>{{i.classification}}</li>
+                <li><strong>Estimated Price: </strong>£{{i.estimated_price}}.00</li>
+                <li><strong>Bid Amount: </strong>£{{j.sold_price}}.00</li>
+              </ul>
+
+              <h2>Total with commission: <strong>£{{j.commission_amount}}</strong></h2>
+            </div>
+            <div id="paypal-button-container">
+                <script src="https://www.paypal.com/sdk/js?client-id=AS_diZES3svvhtpug_HdmKFf_Ib354kzTPiIbZz2jIwVcyyFAgHO4k8VOC8-6qwD6fEMm6CICOY5yBcp&currency=GBP"></script>
+            </div>
+            <script>
+              function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+              const csrftoken = getCookie('csrftoken');
+
+              var total = {{j.commission_amount}}
+              var item_id = {{i.item_lot}}
+
+	 	function completeOrder(){
+	 		var url = "{% url 'markSold' %}"
+
+	 		fetch(url, {
+	 			method:'POST',
+	 			headers:{
+	 				'Content-type':'application/json',
+	 				'X-CSRFToken':csrftoken,
+	 			},
+	 			body:JSON.stringify({'item_id':item_id})
+	 		})
+	 	}
+                // Render the PayPal button into #paypal-button-container
+                paypal.Buttons({
+
+                    // Set up the transaction
+                    createOrder: function(data, actions) {
+                        return actions.order.create({
+                            purchase_units: [{
+                                amount: {
+                                    value: total
+                                }
+                            }]
+                        });
+                    },
+
+                    // Finalize the transaction
+                    onApprove: function(data, actions) {
+                        return actions.order.capture().then(function(details) {
+                            // Show a success message to the buyer
+                            completeOrder()
+                            alert('Transaction completed by ' + details.payer.name.given_name + '!');
+                        });
+                    }
+
+
+                }).render('#paypal-button-container');
+            </script>
+            {% endfor %}
+        {% endif %}
+        </div>
+    </section>
+{% endblock %}
